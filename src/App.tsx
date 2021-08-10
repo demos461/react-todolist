@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './App.css';
+import s from './App.module.css';
 import TodoList, {TaskType} from './TodoList';
 import {v1} from 'uuid';
 
@@ -34,14 +34,20 @@ function App() {
         setFilter(value)
     }
 
+    const changeTaskStatus = (id: string, isDone: boolean) => {
+        setTasks(tasks.map(t => t.id === id ? {...t, isDone} : t))
+    }
+
     return (
-        <div className="App">
+        <div className={s.App}>
             <TodoList
                 title={'Technology'}
                 tasks={tasksForTodoList}
                 removeTask={removeTask}
                 addTask={addTask}
+                filter={filter}
                 changeFilter={changeFilter}
+                changeTaskStatus={changeTaskStatus}
             />
         </div>
     );
