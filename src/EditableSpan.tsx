@@ -1,3 +1,4 @@
+import {TextField} from '@material-ui/core';
 import React, {ChangeEvent, useState} from 'react';
 
 type EditableSpanProps = {
@@ -32,7 +33,8 @@ const EditableSpan: React.FC<EditableSpanProps> = ({title, editItem}) => {
     return (
         editMode ?
             <div style={{display: 'inline-block'}}>
-                <input
+                <TextField
+                    size={'small'}
                     value={inputValue}
                     onChange={onChangeInputHandler}
                     onBlur={onBlurHandler}

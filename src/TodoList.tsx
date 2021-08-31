@@ -1,8 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import {FilterValueType} from './App';
-import s from './App.module.css'
 import AddItemForm from './AddItemForm';
 import EditableSpan from './EditableSpan';
+import {Button, Card, Checkbox, IconButton} from '@material-ui/core';
+import {Clear} from '@material-ui/icons';
 
 export type TaskType = {
     id: string
@@ -57,37 +58,60 @@ const TodoList: React.FC<TodoListProps> = ({
 
 
     return (
-        <div>
+        <Card style={{padding: '20px 20px'}}>
             <h3><EditableSpan title={title} editItem={changeTodoListTitleHandler}/>
-                <button onClick={removeTodoListHandler}>x</button>
+                <IconButton onClick={removeTodoListHandler} size={'small'}>
+                    <Clear/>
+                </IconButton>
             </h3>
             <AddItemForm addItem={addTaskHandler}/>
-            <ul>
-                {tasks.map(t => {
+            {tasks.map(t => {
 
-                    const onClickHandler = () => removeTask(todoListId, t.id)
-                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
-                        changeTaskStatus(todoListId, t.id, e.currentTarget.checked)
-                    const changeTaskTitleHandler = (title: string) => changeTaskTitle(todoListId, t.id, title)
-                    return (
-                        <li key={t.id} className={t.isDone ? s.isDone : ''}>
-                            <input type="checkbox" checked={t.isDone} onChange={onChangeHandler}/>
-                            <EditableSpan title={t.title} editItem={changeTaskTitleHandler}/>
-                            <button onClick={onClickHandler}>X</button>
-                        </li>
-                    )
-                })}
+                const onClickHandler = () => removeTask(todoListId, t.id)
+                const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
+                    changeTaskStatus(todoListId, t.id, e.currentTarget.checked)
+                const changeTaskTitleHandler = (title: string) => changeTaskTitle(todoListId, t.id, title)
 
-            </ul>
+                return (
+                    <div key={t.id}>
+                        <Checkbox color={'primary'} checked={t.isDone} onChange={onChangeHandler}/>
+                        <EditableSpan title={t.title} editItem={changeTaskTitleHandler}/>
+                        <IconButton onClick={onClickHandler} size={'small'}>
+                            <Clear/>
+                        </IconButton>
+                    </div>
+                )
+            })}
             <div>
-                <button className={filter === 'all' ? s.activeFilter : ''} onClick={onAllClickHandler}>All</button>
-                <button className={filter === 'active' ? s.activeFilter : ''} onClick={onActiveClickHandler}>Active
-                </button>
-                <button className={filter === 'completed' ? s.activeFilter : ''}
-                        onClick={onCompletedClickHandler}>Completed
-                </button>
+                <Button
+                    color={filter === 'all' ? 'secondary' : 'primary'}
+                    onClick={onAllClickHandler}
+                    variant={'contained'}
+                    size={'small'}
+                    style={{margin: '0 2px'}}
+                >
+                    All
+                </Button>
+                <Button
+                    color={filter === 'active' ? 'secondary' : 'primary'}
+                    onClick={onActiveClickHandler}
+                    variant={'contained'}
+                    size={'small'}
+                    style={{margin: '0 2px'}}
+                >
+                    Active
+                </Button>
+                <Button
+                    color={filter === 'completed' ? 'secondary' : 'primary'}
+                    onClick={onCompletedClickHandler}
+                    variant={'contained'}
+                    size={'small'}
+                    style={{margin: '0 2px'}}
+                >
+                    Completed
+                </Button>
             </div>
-        </div>
+        </Card>
     );
 };
 

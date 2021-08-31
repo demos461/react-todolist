@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import s from './App.module.css';
+import {IconButton, TextField} from '@material-ui/core';
+import {Add} from '@material-ui/icons';
 
 type AddItemFormProps = {
     addItem: (title: string) => void
@@ -29,15 +30,18 @@ const AddItemForm: React.FC<AddItemFormProps> = ({addItem}) => {
     }
     return (
         <div>
-            <input
-                className={error ? s.error : ''}
+            <TextField
+                size={'small'}
+                variant={'outlined'}
+                error={error}
                 value={inputValue}
                 onChange={onChangeInputHandler}
                 onKeyPress={onKeyPressInputHandler}
+                helperText={error && 'Title is required'}
             />
-            <button onClick={addItemHandler}>+</button>
-
-            {error && <div className={s.errorMessage}>Title is required</div>}
+            <IconButton color={'primary'} size={'small'} onClick={addItemHandler}>
+                <Add fontSize={'large'}/>
+            </IconButton>
         </div>
     );
 };
