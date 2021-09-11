@@ -4,10 +4,18 @@ import {v1} from 'uuid';
 import AddItemForm from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
+import {
+    addTodoListAC, changeTodoListFilterAC,
+    changeTodoListTitleAC,
+    removeTodoListAC,
+    todoListReducer
+} from './reducers/todolists-reducer';
+import {useReducer} from 'react';
 
 export type FilterValueType = 'all' | 'active' | 'completed'
 
-type TodoListsType = {
+
+export type TodoListsType = {
     id: string
     title: string
     filter: FilterValueType
@@ -22,10 +30,12 @@ function App() {
     let todolistID1 = v1();
     let todolistID2 = v1();
 
-    let [todoLists, setTodoLists] = useState<Array<TodoListsType>>([
+    const initialState: TodoListsType[] = [
         {id: todolistID1, title: 'What to learn', filter: 'all'},
         {id: todolistID2, title: 'What to buy', filter: 'all'},
-    ])
+    ]
+
+    const [todoLists, dispatch] = useReducer(todoListReducer, initialState);
 
     let [tasks, setTasks] = useState<TasksType>({
         [todolistID1]: [
@@ -61,21 +71,21 @@ function App() {
 
     const addTodoList = (title: string) => {
         const todoListId = v1()
-        setTodoLists([...todoLists, {id: todoListId, title, filter: 'all'}])
+        dispatch(addTodoListAC(title))
         setTasks({...tasks, [todoListId]: []})
     }
 
     const removeTodoList = (todoListId: string) => {
-        setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
+        dispatch(removeTodoListAC(todoListId))
         delete tasks[todoListId]
     }
 
     const changeTodoListTitle = (todoListId: string, title: string) => {
-        setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, title} : tl))
+        dispatch(changeTodoListTitleAC(todoListId, title))
     }
 
     const changeFilter = (todoListId: string, filter: FilterValueType) => {
-        setTodoLists(todoLists.map(tl => tl.id === todoListId ? {...tl, filter} : tl))
+        dispatch(changeTodoListFilterAC(todoListId, filter))
     }
 
 
