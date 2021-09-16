@@ -65,7 +65,7 @@ const TodoList: React.FC<TodoListProps> = ({
                 </IconButton>
             </h3>
             <AddItemForm addItem={addTaskHandler}/>
-            {tasks.map(t => {
+            {tasks && tasks.map(t => {
 
                 const onClickHandler = () => removeTask(todoListId, t.id)
                 const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
