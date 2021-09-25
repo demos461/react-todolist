@@ -1,5 +1,5 @@
 import {v1} from 'uuid'
-import {FilterValueType, TodoListsType} from '../App'
+import {FilterValueType, TodoListsType} from '../../App'
 
 export enum todoListsActionType {
     ADD_TODOLIST = 'ADD_TODOLIST',
@@ -8,7 +8,7 @@ export enum todoListsActionType {
     CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER'
 }
 
-export const todoListsReducer = (state: TodoListsType[], action: ActionType) : TodoListsType[] => {
+export const todoListsReducer = (state: TodoListsType[] = [], action: ActionType): TodoListsType[] => {
     switch (action.type) {
         case todoListsActionType.ADD_TODOLIST: {
             return [...state, {id: action.todoListId, title: action.title, filter: 'all'}]
@@ -23,7 +23,7 @@ export const todoListsReducer = (state: TodoListsType[], action: ActionType) : T
             return state.map(tl => tl.id === action.todoListId ? {...tl, filter: action.filter} : tl)
         }
         default:
-            throw new Error(`I don't understand this type`)
+            return state
     }
 }
 
@@ -42,7 +42,7 @@ export const addTodoListAC = (title: string) => {
     return {
         type: todoListsActionType.ADD_TODOLIST,
         title,
-        todoListId: v1()
+        todoListId: v1(),
     } as const
 
 }
@@ -58,7 +58,7 @@ export const changeTodoListTitleAC = (todoListId: string, title: string) => {
     return {
         type: todoListsActionType.CHANGE_TODOLIST_TITLE,
         todoListId,
-        title
+        title,
     } as const
 }
 
@@ -66,6 +66,6 @@ export const changeTodoListFilterAC = (todoListId: string, filter: FilterValueTy
     return {
         type: todoListsActionType.CHANGE_TODOLIST_FILTER,
         todoListId,
-        filter
+        filter,
     } as const
 }

@@ -1,5 +1,5 @@
 import {TasksType} from '../App';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from '../reducers/tasks-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from '../redux/reducers/tasks-reducer';
 
 let startState: TasksType;
 

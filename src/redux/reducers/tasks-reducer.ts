@@ -1,7 +1,6 @@
 import {v1} from 'uuid'
-import {TasksType} from '../App';
+import {TasksType} from '../../App';
 import {addTodoListACType, removeTodoListACType, todoListsActionType} from './todolists-reducer';
-
 
 export enum tasksActionType {
     ADD_TASK = 'ADD_TASK',
@@ -10,7 +9,7 @@ export enum tasksActionType {
     CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS'
 }
 
-export const tasksReducer = (state: TasksType, action: ActionType): TasksType => {
+export const tasksReducer = (state: TasksType = {}, action: ActionType): TasksType => {
     switch (action.type) {
         case tasksActionType.ADD_TASK: {
             const stateCopy = {...state}
@@ -54,7 +53,7 @@ export const tasksReducer = (state: TasksType, action: ActionType): TasksType =>
         }
 
         default:
-            throw new Error(`I don't understand this type`)
+            return state
     }
 }
 
@@ -75,7 +74,7 @@ export const addTaskAC = (todoListId: string, title: string) => {
     return {
         type: tasksActionType.ADD_TASK,
         todoListId,
-        title
+        title,
     } as const
 
 }
@@ -84,7 +83,7 @@ export const removeTaskAC = (todoListId: string, taskId: string) => {
     return {
         type: tasksActionType.REMOVE_TASK,
         todoListId,
-        taskId
+        taskId,
     } as const
 }
 
@@ -93,7 +92,7 @@ export const changeTaskTitleAC = (todoListId: string, taskId: string, title: str
         type: tasksActionType.CHANGE_TASK_TITLE,
         todoListId,
         taskId,
-        title
+        title,
     } as const
 }
 
@@ -102,6 +101,6 @@ export const changeTaskStatusAC = (todoListId: string, taskId: string, isDone: b
         type: tasksActionType.CHANGE_TASK_STATUS,
         todoListId,
         taskId,
-        isDone
+        isDone,
     } as const
 }
