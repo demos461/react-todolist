@@ -6,9 +6,10 @@ type EditableSpanProps = {
     editItem: (title: string) => void
 }
 
-const EditableSpan: React.FC<EditableSpanProps> = ({title, editItem}) => {
+const EditableSpan: React.FC<EditableSpanProps> = React.memo(({title, editItem}) => {
     const [editMode, setEditMode] = useState(false)
     const [inputValue, setInputValue] = useState('')
+    console.log('Editablespan render')
 
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value)
@@ -44,6 +45,6 @@ const EditableSpan: React.FC<EditableSpanProps> = ({title, editItem}) => {
             :
             <span onDoubleClick={onEditMode}>{title}</span>
     );
-};
+});
 
 export default EditableSpan;

@@ -6,10 +6,11 @@ type AddItemFormProps = {
     addItem: (title: string) => void
 }
 
-const AddItemForm: React.FC<AddItemFormProps> = ({addItem}) => {
+const AddItemForm: React.FC<AddItemFormProps> = React.memo(({addItem}) => {
     const [inputValue, setInputValue] = useState('')
     const [error, setError] = useState(false)
 
+    console.log('Additemform render')
     const addItemHandler = () => {
         if (inputValue.trim()) {
             addItem(inputValue.trim())
@@ -25,7 +26,7 @@ const AddItemForm: React.FC<AddItemFormProps> = ({addItem}) => {
     }
 
     const onKeyPressInputHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(false)
+        if (error) setError(false)
         if (e.key === 'Enter') addItemHandler()
     }
     return (
@@ -44,6 +45,6 @@ const AddItemForm: React.FC<AddItemFormProps> = ({addItem}) => {
             </IconButton>
         </div>
     );
-};
+});
 
 export default AddItemForm;
