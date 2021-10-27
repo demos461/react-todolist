@@ -2,8 +2,8 @@
 
 # dependencies
 /node_modules
+.idea
 /.pnp
-/.idea
 .pnp.js
 
 # testing
@@ -13,7 +13,6 @@
 /build
 
 # misc
-.prettierrc
 .DS_Store
 .env.local
 .env.development.local
