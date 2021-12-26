@@ -1,7 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import {Add} from '@mui/icons-material';
+import { AddBox } from '@mui/icons-material';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -37,7 +37,6 @@ export const AddItemForm = React.memo(function (props: AddItemFormPropsType) {
 
     return <div>
         <TextField variant="outlined"
-                   size="small"
                    error={!!error}
                    value={title}
                    onChange={onChangeHandler}
@@ -45,8 +44,8 @@ export const AddItemForm = React.memo(function (props: AddItemFormPropsType) {
                    label="Title"
                    helperText={error}
         />
-        <IconButton onClick={addItem}>
-            <Add/>
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox/>
         </IconButton>
     </div>
 })
