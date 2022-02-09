@@ -43,6 +43,7 @@ export const initializeAppTC = () => (dispatch: Dispatch<ActionsType>) => {
             dispatch(setIsInitializedAC(true))
         } else {
             handleServerAppError(res.data, dispatch);
+            dispatch(setIsInitializedAC(true))
         }
     })
         .catch((error) => {
