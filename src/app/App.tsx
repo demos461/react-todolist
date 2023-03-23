@@ -3,7 +3,7 @@ import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store'
-import {initializeAppTC, RequestStatusType} from './app-reducer'
+import {initializeAppTC, RequestStatusType} from './appSlice'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +16,7 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 import CircularProgress from '@mui/material/CircularProgress'
-import {logoutTC} from "../features/Login/auth-reducer";
+import {logoutTC} from "../features/Login/authSlice";
 
 type PropsType = {
     demo?: boolean
