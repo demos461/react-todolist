@@ -1,5 +1,5 @@
-import {tasksReducer} from '../features/TodolistsList/tasks-reducer';
-import {todolistsReducer} from '../features/TodolistsList/todolists-reducer';
+import {tasksReducer} from '../features/TodolistsList/tasksSlice';
+import {todolistsReducer} from '../features/TodolistsList/todolistsSlice';
 import thunkMiddleware from 'redux-thunk'
 import {appReducer} from './appSlice'
 import {authReducer} from "../features/Login/authSlice";
