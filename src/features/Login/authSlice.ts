@@ -12,11 +12,11 @@ export const logoutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) 
             return {isLoggedIn: false}
         } else {
             handleServerAppError(res.data, thunkAPI.dispatch)
-            return {isLoggedIn: true}
+            return thunkAPI.rejectWithValue({isLoggedIn: true})
         }
     } catch (error: any) {
         handleServerNetworkError(error, thunkAPI.dispatch)
-        return {isLoggedIn: true}
+        return  thunkAPI.rejectWithValue({isLoggedIn: true})
     }
 })
 
