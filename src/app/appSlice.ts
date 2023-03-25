@@ -1,8 +1,7 @@
-import {Dispatch} from "redux";
 import {authAPI} from "../api/todolists-api";
 import {setIsLoggedIn} from "../features/Login/authSlice";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type InitialStateType = {
@@ -19,6 +18,22 @@ const initialState: InitialStateType = {
     isInitialized: false
 }
 
+export const initializeAppTC = createAsyncThunk('app/initializeApp', async (param, thunkAPI) => {
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === 0) {
+            thunkAPI.dispatch(setIsLoggedIn(true));
+            return {isInitialized: true}
+        } else {
+            handleServerAppError(res.data, thunkAPI.dispatch);
+            return thunkAPI.rejectWithValue({isInitialized: true})
+        }
+    } catch (error: any) {
+        handleServerNetworkError(error, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({isInitialized: false})
+    }
+})
+
 const appSlice = createSlice({
     name: 'app',
     initialState,
@@ -29,27 +44,16 @@ const appSlice = createSlice({
         setAppError: (state, action: PayloadAction<string | null>) => {
             state.error = action.payload
         },
-        setAppIsInitialized: (state, action: PayloadAction<boolean>) => {
-            state.isInitialized = action.payload
-        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(initializeAppTC.fulfilled, (state, action) => {
+            state.isInitialized = action.payload.isInitialized
+        })
     }
 })
 
-export const {setAppStatus, setAppIsInitialized, setAppError} = appSlice.actions
+export const {setAppStatus, setAppError} = appSlice.actions
 
 export const appReducer = appSlice.reducer
 
-export const initializeAppTC = () => (dispatch: Dispatch) => {
-    authAPI.me().then(res => {
-        if (res.data.resultCode === 0) {
-            dispatch(setIsLoggedIn(true));
-            dispatch(setAppIsInitialized(true))
-        } else {
-            handleServerAppError(res.data, dispatch);
-            dispatch(setAppIsInitialized(true))
-        }
-    })
-        .catch((error) => {
-            handleServerNetworkError(error, dispatch)
-        })
-}
+
