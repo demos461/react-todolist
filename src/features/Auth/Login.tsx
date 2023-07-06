@@ -1,17 +1,10 @@
 import React from 'react'
-import Grid from '@mui/material/Grid';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import FormLabel from '@mui/material/FormLabel';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material';
 import {useFormik} from "formik";
-import {useDispatch, useSelector} from "react-redux";
-import {loginTC} from "./authSlice";
-import {AppRootStateType} from "../../app/store";
+import {useAppSelector} from "../../app/store";
 import {Navigate} from "react-router-dom";
+import {useActions} from "../../hooks/useActions";
+import {selectIsLoggedIn} from "./selectors";
 
 type FormikErrorType = {
     email?: string
@@ -21,8 +14,8 @@ type FormikErrorType = {
 
 
 export const Login = () => {
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-    const dispatch = useDispatch();
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const {loginTC} = useActions()
 
     const formik = useFormik({
         initialValues: {
@@ -40,7 +33,7 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            dispatch(loginTC({...values, captcha: false}))
+            loginTC({...values, captcha: false})
             formik.resetForm();
         },
     })
@@ -56,7 +49,7 @@ export const Login = () => {
                     <FormLabel>
                         <p>To log in get registered
                             <a href={'https://social-network.samuraijs.com/'}
-                               target={'_blank'}> here
+                               target={'_blank'} rel="noreferrer"> here
                             </a>
                         </p>
                         <p>or use common test account credentials:</p>

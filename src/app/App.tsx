@@ -1,40 +1,37 @@
 import React, {useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
-import {useDispatch, useSelector} from 'react-redux'
-import {AppRootStateType} from './store'
-import {initializeAppTC, RequestStatusType} from './appSlice'
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import LinearProgress from '@mui/material/LinearProgress';
+import {useAppSelector} from './store'
+import {
+    AppBar,
+    Button,
+    CircularProgress,
+    Container,
+    IconButton,
+    LinearProgress,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "../features/Login/Login";
-import CircularProgress from '@mui/material/CircularProgress'
-import {logoutTC} from "../features/Login/authSlice";
+import {Login} from "../features/Auth/Login";
+import {useActions} from "../hooks/useActions";
+import {selectIsInitialized, selectStatus} from './selectors';
+import { selectIsLoggedIn } from '../features/Auth/selectors';
 
-type PropsType = {
-    demo?: boolean
-}
-
-function App({demo = false}: PropsType) {
-    const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
-    const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized)
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-
-    const dispatch = useDispatch()
+export const App = () => {
+    const status = useAppSelector(selectStatus)
+    const isInitialized = useAppSelector(selectIsInitialized)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const {initializeAppTC, logoutTC} = useActions()
 
     useEffect(() => {
-        dispatch(initializeAppTC())
-    },[])
+        initializeAppTC()
+    }, [])
 
     const onButtonClick = () => {
-        dispatch(logoutTC())
+        logoutTC()
     }
 
     if (!isInitialized) {
@@ -48,10 +45,7 @@ function App({demo = false}: PropsType) {
         <div className="App">
             <ErrorSnackbar/>
             <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
+                <Toolbar style={{display: 'flex', justifyContent: 'space-between'}}>
                     <Typography variant="h6">
                         TODOS
                     </Typography>
@@ -61,7 +55,7 @@ function App({demo = false}: PropsType) {
             </AppBar>
             <Container fixed>
                 <Routes>
-                    <Route path='/' element={<TodolistsList demo={demo}/>}/>
+                    <Route path='/' element={<TodolistsList/>}/>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/404' element={<h1>404: PAGE NOT FOUND</h1>}/>
                     <Route path='*' element={<Navigate to='/404'/>}/>
@@ -70,5 +64,3 @@ function App({demo = false}: PropsType) {
         </div>
     )
 }
-
-export default App
